@@ -1,0 +1,13 @@
+logging:
+  level:
+    root: warn
+    org:
+      springframework:
+        wek: debug #开启debug模式，打印详细的错误信息
+#banner:
+#  location: banner.txt
+
+#spring:
+#    main:
+#        banner-mode: "off"
+
