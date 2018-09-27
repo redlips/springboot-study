@@ -1,4 +1,4 @@
-package com.redlips.java.features.concurrency.future.pattern;
+package com.redlips.java.features.currency.futurepattern;
 
 /**
  * @author 花落孤忆

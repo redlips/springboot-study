@@ -1,4 +1,4 @@
-package com.redlips.java.features.concurrency.future.pattern;
+package com.redlips.java.features.currency.futurepattern;
 
 /**
  * @author 花落孤忆
@@ -24,11 +24,13 @@ public class FutureData implements Data {
         while (!isReady) {
             try {
                 // 还未装入RealData，一直等待，直到RealData被注入
+                System.out.println("此时使用Future.getResult，但是真实数据RealData还未装入，只能等待");
                 wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+        System.out.println("RealData已经装入，直接返回");
         return realData.result;
     }
 }

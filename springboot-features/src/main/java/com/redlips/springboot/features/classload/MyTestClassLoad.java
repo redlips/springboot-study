@@ -1,4 +1,4 @@
-package com.redlips.springboot.features;
+package com.redlips.springboot.features.classload;
 
 /**
  * @description: 测试类加载器
