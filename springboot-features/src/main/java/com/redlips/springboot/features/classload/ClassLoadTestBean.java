@@ -11,4 +11,9 @@ package com.redlips.springboot.features.classload;
 public class ClassLoadTestBean {
     public ClassLoadTestBean() {
     }
+
+    @Override
+    public String toString() {
+        return "类加载器测试Bean";
+    }
 }

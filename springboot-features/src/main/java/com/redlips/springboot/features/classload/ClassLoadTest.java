@@ -13,9 +13,10 @@ public class ClassLoadTest {
         try {
             //查看当前系统类路径中包含的路径条目，此时会显示当前工程目录的class目录
             System.out.println("打印结果:" + System.getProperty("java.class.path"));
+            System.out.println("扩展类加载器加载的目录:" + System.getProperty("java.ext.dirs"));
             //调用加载当前类的类加载器（这里即为系统类加载器）加载ClassLoadTestBean
             Class typeLoaded = Class.forName("com.redlips.springboot.features.classload.ClassLoadTestBean");
-            //查看被加载的TestBean类型是被那个类加载器加载的ClassLoadTestBean
+            //查看被加载的TestBean类型是被哪个类加载器加载的ClassLoadTestBean
             System.out.println(typeLoaded.getClassLoader());
         } catch (Exception e) {
             e.printStackTrace();
