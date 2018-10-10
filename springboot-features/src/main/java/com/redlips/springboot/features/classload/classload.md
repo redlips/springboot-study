@@ -182,7 +182,7 @@ defineClass()方法是用来将byte字节流解析成JVM能够识别的Class对�
 
 - 自定义类加载器，父类加载器肯定为AppClassLoader
 
-        
+    
     public class FileClassLoader extends ClassLoader {
         private String rootDir;
         public FileClassLoader(String rootDir) {
@@ -222,7 +222,7 @@ defineClass()方法是用来将byte字节流解析成JVM能够识别的Class对�
     AppClassLoader的父类加载器：sun.misc.Launcher$ExtClassLoader@8efb846
     ExtClassLoader的父类加载器：null
     
-   
+
 代码中，我们自定义了一个FileClassLoader，这里我们继承了ClassLoader而非URLClassLoader,因此需要自己编写findClass()方法逻辑以及加载字节码的逻辑，关于自定义类加载器我们稍后会分析，这里仅需要知道FileClassLoader是自定义加载器即可，接着在main方法中，通过ClassLoader.getSystemClassLoader()获取到系统默认类加载器，通过获取其父类加载器及其父父类加载器，同时还获取了自定义类加载器的父类加载器,最终输出结果正如我们所预料的，AppClassLoader的父类加载器为ExtClassLoader，而ExtClassLoader没有父类加载器。如果我们实现自己的类加载器，它的父加载器都只会是AppClassLoader。这里我们不妨看看Lancher的构造器源码
 
     
