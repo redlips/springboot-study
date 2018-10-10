@@ -1,4 +1,4 @@
-package com.redlips.springboot.features.classload;
+package com.redlips.java.features.classload;
 
 /**
  * @description: 测试ClassLoad的Bean

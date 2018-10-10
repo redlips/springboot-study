@@ -303,8 +303,8 @@ ExtClassLoader的父类加载器：null
     FileClassLoader loader1 = new FileClassLoader(rootDir);
     FileClassLoader loader2 = new FileClassLoader(rootDir);
     // 通过findClass创建类的Class对象
-    Class<?> object1 = loader1.findClass("com.redlips.springboot.features.classload.ClassLoadTestBean");
-    Class<?> object2 = loader2.findClass("com.redlips.springboot.features.classload.ClassLoadTestBean");
+    Class<?> object1 = loader1.findClass("com.redlips.java.features.classload.ClassLoadTestBean");
+    Class<?> object2 = loader2.findClass("com.redlips.java.features.classload.ClassLoadTestBean");
     System.out.println("object1的hashcode：" + object1.hashCode());
     System.out.println("object2的hashcode：" + object2.hashCode());
     
@@ -315,8 +315,8 @@ ExtClassLoader的父类加载器：null
 如果调用父类的loadClass方法，结果如下，除非重写loadClass()方法去掉缓存查找步骤，不过现在一般都不建议重写loadClass()方法。
     
     // 如果调用父类的loadClass方法
-    Class<?> object3 = loader1.loadClass("com.redlips.springboot.features.classload.ClassLoadTestBean");
-    Class<?> object4 = loader2.loadClass("com.redlips.springboot.features.classload.ClassLoadTestBean");
+    Class<?> object3 = loader1.loadClass("com.redlips.java.features.classload.ClassLoadTestBean");
+    Class<?> object4 = loader2.loadClass("com.redlips.java.features.classload.ClassLoadTestBean");
     System.out.println("object3的hashcode：" + object3.hashCode());
     System.out.println("object4的hashcode：" + object4.hashCode());
     System.out.println("Class->ClassLoadTestBean：" + ClassLoadTestBean.class.hashCode());
@@ -356,7 +356,7 @@ ExtClassLoader的父类加载器：null
     }
 
 
-    package com.redlips.springboot.features.classload;
+    package com.redlips.java.features.classload;
     
     import java.io.ByteArrayOutputStream;
     import java.io.File;
@@ -429,7 +429,7 @@ ExtClassLoader的父类加载器：null
             FileClassLoader loader1 = new FileClassLoader(rootDir);
             try {
                 // 加载指定的Class文件
-                Class<?> testClass = loader1.loadClass("com.redlips.springboot.features.classload.ClassLoadTestBean");
+                Class<?> testClass = loader1.loadClass("com.redlips.java.features.classload.ClassLoadTestBean");
                 System.out.println(testClass.newInstance().toString());
                 // 输出结果：类加载器测试Bean
             } catch (Exception e) {
@@ -440,7 +440,7 @@ ExtClassLoader的父类加载器：null
 
 显然我们通过getClassData()方法找到class文件并转换为字节流，并重写findClass()方法，利用defineClass()方法创建了类的class对象。在main方法中调用了loadClass()方法加载指定路径下的class文件，由于启动类加载器、拓展类加载器以及系统类加载器（其实就现在目录而言，target目录下的class文件系统加载器是可以加载到的，现在默认加载不到或者更改到了其它目录中）都无法在其路径下找到该类，因此最终将有自定义类加载器加载，即调用findClass()方法进行加载。如果继承URLClassLoader实现，那代码就更简洁了，如下：
     
-    package com.redlips.springboot.features.classload;
+    package com.redlips.java.features.classload;
     
     import java.net.URL;
     import java.net.URLClassLoader;
@@ -478,7 +478,7 @@ ExtClassLoader的父类加载器：null
                 URL[] url = {uri.toURL()};
                 FileUrlClassLoad loader = new FileUrlClassLoad(url);
                 // 加载指定的文件
-                Class<?> loadClass = loader.loadClass("com.redlips.springboot.features.classload.ClassLoadTestBean");
+                Class<?> loadClass = loader.loadClass("com.redlips.java.features.classload.ClassLoadTestBean");
                 System.out.println(loadClass.newInstance().toString());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -492,7 +492,7 @@ ExtClassLoader的父类加载器：null
 
 自定义网络类加载器，主要用于读取通过网络传递的class文件（在这里我们省略class文件的解密过程），并将其转换成字节流生成对应的class对象，如下：
     
-    package com.redlips.springboot.features.classload;
+    package com.redlips.java.features.classload;
     
     import java.io.ByteArrayOutputStream;
     import java.io.InputStream;

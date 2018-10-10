@@ -1,4 +1,4 @@
-package com.redlips.springboot.features.classload;
+package com.redlips.java.features.classload;
 
 import java.net.URL;
 import java.net.URLClassLoader;

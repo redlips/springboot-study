@@ -1,4 +1,4 @@
-package com.redlips.springboot.features.classload;
+package com.redlips.java.features.classload;
 
 /**
  * @description: 进一步测试ClassLoad
@@ -15,7 +15,7 @@ public class ClassLoadTest {
             System.out.println("打印结果:" + System.getProperty("java.class.path"));
             System.out.println("扩展类加载器加载的目录:" + System.getProperty("java.ext.dirs"));
             //调用加载当前类的类加载器（这里即为系统类加载器）加载ClassLoadTestBean
-            Class typeLoaded = Class.forName("com.redlips.springboot.features.classload.ClassLoadTestBean");
+            Class typeLoaded = Class.forName("com.redlips.java.features.classload.ClassLoadTestBean");
             //查看被加载的TestBean类型是被哪个类加载器加载的ClassLoadTestBean
             System.out.println(typeLoaded.getClassLoader());
         } catch (Exception e) {

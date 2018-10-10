@@ -1,4 +1,4 @@
-package com.redlips.springboot.features.classload;
+package com.redlips.java.features.classload;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
