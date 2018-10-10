@@ -182,10 +182,9 @@ defineClass()方法是用来将byte字节流解析成JVM能够识别的Class对�
 
 - 自定义类加载器，父类加载器肯定为AppClassLoader
 
-    
+        
     public class FileClassLoader extends ClassLoader {
         private String rootDir;
-    
         public FileClassLoader(String rootDir) {
             this.rootDir = rootDir;
         }
@@ -223,6 +222,7 @@ defineClass()方法是用来将byte字节流解析成JVM能够识别的Class对�
     AppClassLoader的父类加载器：sun.misc.Launcher$ExtClassLoader@8efb846
     ExtClassLoader的父类加载器：null
     
+   
 代码中，我们自定义了一个FileClassLoader，这里我们继承了ClassLoader而非URLClassLoader,因此需要自己编写findClass()方法逻辑以及加载字节码的逻辑，关于自定义类加载器我们稍后会分析，这里仅需要知道FileClassLoader是自定义加载器即可，接着在main方法中，通过ClassLoader.getSystemClassLoader()获取到系统默认类加载器，通过获取其父类加载器及其父父类加载器，同时还获取了自定义类加载器的父类加载器,最终输出结果正如我们所预料的，AppClassLoader的父类加载器为ExtClassLoader，而ExtClassLoader没有父类加载器。如果我们实现自己的类加载器，它的父加载器都只会是AppClassLoader。这里我们不妨看看Lancher的构造器源码
 
     
@@ -489,3 +489,64 @@ defineClass()方法是用来将byte字节流解析成JVM能够识别的Class对�
 非常简洁除了需要重写构造器外无需编写findClass()方法及其class文件的字节流转换逻辑。
 
 #### 自定义网络类加载器
+
+自定义网络类加载器，主要用于读取通过网络传递的class文件（在这里我们省略class文件的解密过程），并将其转换成字节流生成对应的class对象，如下：
+    
+    package com.redlips.springboot.features.classload;
+    
+    import java.io.ByteArrayOutputStream;
+    import java.io.InputStream;
+    import java.net.URL;
+    
+    /**
+     * @author 花落孤忆
+     * @create 2018-10-09 18:22
+     * @description 自定义网络类加载器
+     */
+    public class NetClassLoader extends ClassLoader {
+        // Class文件的URL
+        private String url;
+    
+        public NetClassLoader(String url) {
+            this.url = url;
+        }
+    
+        @Override
+        protected Class<?> findClass(String name) throws ClassNotFoundException {
+            byte[] classData = getClassDataFromNet(name);
+            if(classData == null) {
+                throw new ClassNotFoundException();
+            } else {
+                return defineClass(name, classData, 0, classData.length);
+            }
+        }
+    
+        private byte[] getClassDataFromNet(String className) {
+            // 获取class文件网络路径
+            String path = classNameToPath(className);
+            try {
+                URL url = new URL(path);
+                InputStream is = url.openStream();
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                int bufferSize = 1024 * 4;
+                byte[] buffer = new byte[bufferSize];
+                int byteReadNum = 0;
+                while ((byteReadNum = is.read(buffer)) != -1) {
+                    baos.write(buffer, 0, byteReadNum);
+                }
+                // ...省略解密过程
+                return baos.toByteArray();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    
+        private String classNameToPath(String className) {
+            return url + "/" + className.replace('.', '/').contains(".class");
+        }
+    }
+
+比较简单，主要是在获取字节码流时的区别，从网络直接获取到字节流再转字节数组然后利用defineClass方法创建class对象，如果继承URLClassLoader类则和前面文件路径的实现是类似的，无需担心路径是filePath还是Url，因为URLClassLoader内的URLClassPath对象会根据传递过来的URL数组中的路径判断是文件还是jar包，然后根据不同的路径创建FileLoader或者JarLoader或默认类Loader去读取对于的路径或者url下的class文件。
+
+
