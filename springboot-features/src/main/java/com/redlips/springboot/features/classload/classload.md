@@ -549,4 +549,80 @@ ExtClassLoader的父类加载器：null
 
 比较简单，主要是在获取字节码流时的区别，从网络直接获取到字节流再转字节数组然后利用defineClass方法创建class对象，如果继承URLClassLoader类则和前面文件路径的实现是类似的，无需担心路径是filePath还是Url，因为URLClassLoader内的URLClassPath对象会根据传递过来的URL数组中的路径判断是文件还是jar包，然后根据不同的路径创建FileLoader或者JarLoader或默认类Loader去读取对于的路径或者url下的class文件。
 
+### 双亲委托机制的破坏者-线程上下文类加载器
+
+在Java应用中存在着很多服务提供者接口（Service Provider Interface，SPI），这些接口允许第三方为它们提供实现，如常见的 SPI 有 JDBC、JNDI等，这些 SPI 的接口属于 Java 核心库，一般存在rt.jar包中，由Bootstrap类加载器加载，而 SPI 的第三方实现代码则是作为Java应用所依赖的 jar 包被存放在classpath路径下，由于SPI接口中的代码经常需要加载具体的第三方实现类并调用其相关方法，但SPI的核心接口类是由引导类加载器来加载的，而Bootstrap类加载器无法直接加载SPI的实现类，同时由于双亲委派模式的存在，Bootstrap类加载器也无法反向委托AppClassLoader加载器SPI的实现类。在这种情况下，我们就需要一种特殊的类加载器来加载第三方的类库，而线程上下文类加载器就是很好的选择。 
+线程上下文类加载器（contextClassLoader）是从 JDK 1.2 开始引入的，我们可以通过java.lang.Thread类中的`getContextClassLoader()`和` setContextClassLoader(ClassLoader cl)`方法来获取和设置线程的上下文类加载器。如果没有手动设置上下文类加载器，线程将继承其父线程的上下文类加载器，初始线程的上下文类加载器是系统类加载器（AppClassLoader）,在线程中运行的代码可以通过此类加载器来加载类和资源，如下图所示，以jdbc.jar加载为例：
+
+![](image/loading6.png)
+
+从图可知rt.jar核心包是有Bootstrap类加载器加载的，其内包含SPI核心接口类，由于SPI中的类经常需要调用外部实现类的方法，而jdbc.jar包含外部实现类(jdbc.jar存在于classpath路径)无法通过Bootstrap类加载器加载，因此只能委派线程上下文类加载器把jdbc.jar中的实现类加载到内存以便SPI相关类使用。显然这种线程上下文类加载器的加载方式破坏了“双亲委派模型”，它在执行过程中抛弃双亲委派加载链模式，使程序可以逆向使用类加载器，当然这也使得Java类加载器变得更加灵活。为了进一步证实这种场景，不妨看看DriverManager类的源码，DriverManager是Java核心rt.jar包中的类，该类用来管理不同数据库的实现驱动即Driver，它们都实现了Java核心包中的java.sql.Driver接口，如mysql驱动包中的com.mysql.jdbc.Driver，这里主要看看如何加载外部实现类，在DriverManager初始化时会执行如下代码：
+    
+    public class DriverManager {
+        // ...省略不必要代码
+        static {
+            // 执行该方法，初始化驱动
+            loadInitialDrivers();
+            println("JDBC DriverManager initialized");
+        }
+        // loadInitialDrivers方法
+        private static void loadInitialDrivers() {
+            // ...省略不必要代码
+    
+            AccessController.doPrivileged(new PrivilegedAction<Void>() {
+                public Void run() {
+                    // 加载外部实现的Driver实现类
+                    ServiceLoader<Driver> loadedDrivers = ServiceLoader.load(Driver.class);
+                    Iterator<Driver> driversIterator = loadedDrivers.iterator();
+    
+                    // ...省略不必要代码
+                    return null;
+                }
+            });
+    
+            // ...省略不必要代码
+        }
+    }
+
+在DriverManager类初始化时执行了loadInitialDrivers()方法,在该方法中通过`ServiceLoader.load(Driver.class)`;去加载外部实现的驱动类，ServiceLoader类会去读取mysql的jdbc.jar下META-INF/services/文件的内容，如下所示：
+
+![](image/loading7.png)
+
+而com.mysql.jdbc.Driver继承类如下(6.0版本之后)：
+    
+    public class Driver extends com.mysql.cj.jdbc.Driver {
+        public Driver() throws SQLException {
+            super();
+        }
+    
+        static {
+            System.err.println("Loading class `com.mysql.jdbc.Driver'. This is deprecated. The new driver class is `com.mysql.cj.jdbc.Driver'. "
+                    + "The driver is automatically registered via the SPI and manual loading of the driver class is generally unnecessary.");
+        }
+    }
+
+从注释可以看出平常我们使用`com.mysql.jdbc.Driver`已被丢弃了，取而代之的是`com.mysql.cj.jdbc.Driver`，也就是说官方不再建议我们使用如下代码注册mysql驱动：
+    
+    //不建议使用该方式注册驱动类
+    Class.forName("com.mysql.jdbc.Driver");
+    String url = "jdbc:mysql://localhost:3306/test?characterEncoding=UTF-8";
+    // 通过java库获取数据库连接
+    Connection conn = java.sql.DriverManager.getConnection(url, "root", "123");
+
+而是直接去掉注册步骤，如下即可：
+    
+    String url = "jdbc:mysql://localhost:3306/test?characterEncoding=UTF-8";
+    // 通过java库获取数据库连接
+    Connection conn = java.sql.DriverManager.getConnection(url, "root", "123");
+
+这样ServiceLoader会帮助我们处理一切，并最终通过load()方法加载，看看load()方法实现：
+    
+    public static <S> ServiceLoader<S> load(Class<S> service) {
+        // 通过线程上下文类加载器加载
+        ClassLoader cl = Thread.currentThread().getContextClassLoader();
+        return ServiceLoader.load(service, cl);
+    }
+
+很明显确实通过线程上下文类加载器加载的，实际上核心包的SPI类对外部实现类的加载都是基于线程上下文类加载器执行的，通过这种方式实现了Java核心代码内部去调用外部实现类。我们知道线程上下文类加载器默认情况下就是AppClassLoader，那为什么不直接通过`getSystemClassLoader()`获取类加载器来加载classpath路径下的类的呢？其实是可行的，但这种直接使用getSystemClassLoader()方法获取AppClassLoader加载类有一个缺点，那就是代码部署到不同服务时会出现问题，如把代码部署到Java Web应用服务或者EJB之类的服务将会出问题，因为这些服务使用的线程上下文类加载器并非AppClassLoader，而是Java Web应用服自家的类加载器，类加载器不同。所以我们应用该少用`getSystemClassLoader()`。总之不同的服务使用的可能默认ClassLoader是不同的，但使用线程上下文类加载器总能获取到与当前程序执行相同的ClassLoader，从而避免不必要的问题。另外关于ServiceLoader本篇并没有过多的阐述，毕竟我们主题是类加载器，但ServiceLoader是个很不错的解耦机制。
+
 
