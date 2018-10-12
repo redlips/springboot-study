@@ -6,5 +6,5 @@ package com.redlips.java.features.currency.futurepattern;
  * @description 返回数据的接口
  */
 public interface Data {
-    public String getResult();
+    String getResult();
 }

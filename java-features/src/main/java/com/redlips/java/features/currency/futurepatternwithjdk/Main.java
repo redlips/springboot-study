@@ -26,7 +26,7 @@ public class Main {
             e.printStackTrace();
         }
 
-        // 相当于上例中的data.getResult()，去的call()方法的返回值
+        // 相当于上例中的data.getResult()，取的call()方法的返回值
         // 如果call()方法没有执行完成，则依然会等待
         System.out.println("真实数据是 = " + future.get());
     }
