@@ -9,6 +9,7 @@
     <modules>
         <module>springboot-features</module>
         <module>java-features</module>
+        <module>spring-features</module>
     </modules>
     <packaging>pom</packaging>
 
