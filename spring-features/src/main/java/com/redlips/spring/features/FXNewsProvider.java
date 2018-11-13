@@ -35,6 +35,14 @@ public class FXNewsProvider {
     }
 
     /**
+     * 引入IOC模式后的：构造方法注入，这样FXNewsProvider就可以重用，就算有新的新闻来源只需要给出特定的IFXNewsListener实现即可。
+     */
+    public FXNewsProvider(IFXNewsListener newsListener, IFXNewsPersistent newsPersistent) {
+        this.newsListener = newsListener;
+        this.newsPersistent = newsPersistent;
+    }
+
+    /**
      * 获取并存储新闻
      */
     private void getAndPersistNews() {
