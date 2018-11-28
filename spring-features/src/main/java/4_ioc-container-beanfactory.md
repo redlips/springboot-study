@@ -65,7 +65,7 @@ BeanFactory来说，ApplicationContext要求更多的系统资源，启动时长
 &emsp;&emsp;BeanFactory作为一个IoC Service Provider，为了明确管理各个业务对象以及业务对象间的依赖绑定关系，同样需要某种途径需要记录和管理
 这些信息。而BeanFactory支持常用的三种方式。
 - **直接编码方式**<br>
-其实，把编码方式单独作为一种方式并不十分恰当，因为无论何种方式，最终都需要编码才能落实。不过通过这些编码可以让我们更加清楚BeanFactory
+&emsp;&emsp;其实，把编码方式单独作为一种方式并不十分恰当，因为无论何种方式，最终都需要编码才能落实。不过通过这些编码可以让我们更加清楚BeanFactory
 在底层是如何运作的。
 ```    
 public static void main(String[] args) {
