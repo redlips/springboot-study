@@ -20,37 +20,37 @@ import org.springframework.core.io.ClassPathResource;
  * @description
  */
 public class MainTest {
-    public static void main(String[] args) {
-        DefaultListableBeanFactory beanRegistry = new DefaultListableBeanFactory();//构造工厂
-        BeanFactory container = bindViaCode(beanRegistry);
-        FXNewsProvider newsProvider = (FXNewsProvider) container.getBean("djNewsProvider");
-        newsProvider.getAndPersistNews();
+        public static void main(String[] args) {
+            DefaultListableBeanFactory beanRegistry = new DefaultListableBeanFactory();//构造工厂
+            BeanFactory container = bindViaCode(beanRegistry);
+            FXNewsProvider newsProvider = (FXNewsProvider) container.getBean("djNewsProvider");
+            newsProvider.getAndPersistNews();
 
-    }
+        }
 
-    public static BeanFactory bindViaCode(BeanDefinitionRegistry  registry) {
-        AbstractBeanDefinition newsProvider = new RootBeanDefinition(FXNewsProvider.class);
-        AbstractBeanDefinition newsListener = new RootBeanDefinition(DowJonesNewsListener.class);
-        AbstractBeanDefinition newsPersistent = new RootBeanDefinition(DowJonesNewsPersistent.class);
+        public static BeanFactory bindViaCode(BeanDefinitionRegistry  registry) {
+            AbstractBeanDefinition newsProvider = new RootBeanDefinition(FXNewsProvider.class);
+            AbstractBeanDefinition newsListener = new RootBeanDefinition(DowJonesNewsListener.class);
+            AbstractBeanDefinition newsPersistent = new RootBeanDefinition(DowJonesNewsPersistent.class);
 
-        // 将Bean定义注册到容器中
-        registry.registerBeanDefinition("djNewsProvider", newsProvider);
-        registry.registerBeanDefinition("djNewsListener", newsListener);
-        registry.registerBeanDefinition("djNewsPersistent", newsPersistent);
+            // 将Bean定义注册到容器中
+            registry.registerBeanDefinition("djNewsProvider", newsProvider);
+            registry.registerBeanDefinition("djNewsListener", newsListener);
+            registry.registerBeanDefinition("djNewsPersistent", newsPersistent);
 
-        // 指定依赖关系
-        // 1.通过构造方法注入方式
-        ConstructorArgumentValues argumentValues = new ConstructorArgumentValues();
-        argumentValues.addIndexedArgumentValue(0, newsListener);
-        argumentValues.addIndexedArgumentValue(1, newsPersistent);
-        newsProvider.setConstructorArgumentValues(argumentValues);
-        // 2.或者通过setter方法注入方式
-        MutablePropertyValues propertyValues = new MutablePropertyValues();
-        propertyValues.addPropertyValue(new PropertyValue("newsListener", newsListener));
-        propertyValues.addPropertyValue(new PropertyValue("newsPersistent", newsPersistent));
-        newsProvider.setPropertyValues(propertyValues);
+            // 指定依赖关系
+            // 1.通过构造方法注入方式
+            ConstructorArgumentValues argumentValues = new ConstructorArgumentValues();
+            argumentValues.addIndexedArgumentValue(0, newsListener);
+            argumentValues.addIndexedArgumentValue(1, newsPersistent);
+            newsProvider.setConstructorArgumentValues(argumentValues);
+            // 2.或者通过setter方法注入方式
+            MutablePropertyValues propertyValues = new MutablePropertyValues();
+            propertyValues.addPropertyValue(new PropertyValue("newsListener", newsListener));
+            propertyValues.addPropertyValue(new PropertyValue("newsPersistent", newsPersistent));
+            newsProvider.setPropertyValues(propertyValues);
 
-        // 绑定完成
-        return (BeanFactory) registry;
-    }
+            // 绑定完成
+            return (BeanFactory) registry;
+        }
 }
