@@ -2,7 +2,7 @@
 &emsp;&emsp;Spring的IoC容器是一个IoC Service Provider，但是，这只是它被冠以IoC之名的部分原因，我们不能忽略的是“容器”。Spring的IoC容器是
 一个提供了IoC支持的轻量级容器，除了基本的IoC支持，它作为轻量级容器还提供了IoC之外的支持。如在Spring的IoC容器之上，Spring还提供了相应的AOP框架
 支持、企业级服务集成等服务。Spring的IoC容器和IoC Service Provider所提供的服务存在一定的交集。<br>
-&emsp;&emsp;提供了两种容器类型：BeanFactory和ApplicationContext.
+&emsp;&emsp;提供了两种容器类型：BeanFactory和ApplicationContext.<br>
 ![](image/beanfactory01.png)
 
 - **BeanFactory**：基础类型IoC容器，提供完整的IoC服务支持。如果没有特殊指定，默认使用延迟初始化策略(lazy-load)。只有客户端对象在需要访问某个受管
@@ -10,20 +10,17 @@
 
 - **ApplicationContext**：ApplicationContext是在BeanFactory的基础上构建，是相对比较高级的容器实现。除了拥有BeanFactory的所有支持，它还提供
 了其它高级的特性，比如事件发布、国际化信息支持等。ApplicationContext所管理的对象，在该类型容器启动之后，默认全部初始化并绑定完成。所以，相对于
-BeanFactory来说，ApplicationContext要求更多的系统资源，启动时长相对要比BeanFactory要长一些。二者的关系图：
+BeanFactory来说，ApplicationContext要求更多的系统资源，启动时长相对要比BeanFactory要长一些。二者的关系图：<br>
 ![](image/beanfactory02.png)
 
 &emsp;&emsp;在新版中，ApplicationContext还继承EnvironmentCapable接口，ApplicationContext间接继承自BeanFactory，所以说它是构建于BeanFactory
-之上的IoC容器。
-<br>
+之上的IoC容器。<br>
 &emsp;&emsp;BeanFactory，顾名思义，就是生产Bean的工厂。既然Spring框架提倡使用POJO，那么把每个业务对象看做一个JavaBean对象，或许更容易理解
 为什么Spring的IoC容器会起这么一个名字。作为Spring提供基本的IoC容器，BeanFactory可以完成作为IoC Service Provider的所有职责，包括业务对象
-注册和对象间的依赖绑定。
-<br>
+注册和对象间的依赖绑定。<br>
 &emsp;&emsp;将应用所需的所有业务对象交给BeanFactory之后，剩下要做的就是直接从BeanFactory取得最终组装完成并且可用的对象。至于业务对象如何组装
 ，你不需要关心，BeanFactory可以帮你搞定。所以，对于客户端而言，与BeanFactory打交道其实很简单。最基本地，BeanFactory肯定会公开一些取得组装完成
 的对象方法接口。对于独立的应用程序，这些主入口是和容器API直接耦合的
-<br>
 
 ### 使用BeanFactory后的改观
 
