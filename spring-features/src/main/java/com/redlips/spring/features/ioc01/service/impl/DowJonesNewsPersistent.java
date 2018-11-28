@@ -1,7 +1,7 @@
-package com.redlips.spring.features.ioc01;
+package com.redlips.spring.features.ioc01.service.impl;
 
-import com.redlips.spring.features.FXNewsBean;
-import com.redlips.spring.features.IFXNewsPersistent;
+import com.redlips.spring.features.ioc01.pojo.FXNewsBean;
+import com.redlips.spring.features.ioc01.service.IFXNewsPersistent;
 
 /**
  * @author 花落孤忆

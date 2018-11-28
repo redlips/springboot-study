@@ -1,6 +1,6 @@
-package com.redlips.spring.features.ioc01;
+package com.redlips.spring.features.ioc01.service.impl;
 
-import com.redlips.spring.features.IFXNewsListener;
+import com.redlips.spring.features.ioc01.service.IFXNewsListener;
 
 /**
  * @author 花落孤忆

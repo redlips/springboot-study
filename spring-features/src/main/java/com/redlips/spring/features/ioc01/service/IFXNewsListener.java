@@ -1,4 +1,4 @@
-package com.redlips.spring.features;
+package com.redlips.spring.features.ioc01.service;
 
 /**
  * @author 花落孤忆

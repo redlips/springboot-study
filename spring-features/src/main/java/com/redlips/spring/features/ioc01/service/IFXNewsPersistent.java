@@ -1,4 +1,6 @@
-package com.redlips.spring.features;
+package com.redlips.spring.features.ioc01.service;
+
+import com.redlips.spring.features.ioc01.pojo.FXNewsBean;
 
 /**
  * @author 花落孤忆

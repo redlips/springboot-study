@@ -1,7 +1,10 @@
-package com.redlips.spring.features;
+package com.redlips.spring.features.ioc01;
 
-import com.redlips.spring.features.ioc01.DowJonesNewsListener;
-import com.redlips.spring.features.ioc01.DowJonesNewsPersistent;
+import com.redlips.spring.features.ioc01.service.impl.DowJonesNewsListener;
+import com.redlips.spring.features.ioc01.service.impl.DowJonesNewsPersistent;
+import com.redlips.spring.features.ioc01.service.IFXNewsListener;
+import com.redlips.spring.features.ioc01.service.IFXNewsPersistent;
+import com.redlips.spring.features.ioc01.pojo.FXNewsBean;
 import org.apache.commons.lang3.ArrayUtils;
 
 /**
@@ -45,7 +48,7 @@ public class FXNewsProvider {
     /**
      * 获取并存储新闻
      */
-    private void getAndPersistNews() {
+    public void getAndPersistNews() {
         // 获取可用的新闻
         String[] newsIds = newsListener.getAvailableNewsIds();
         if (ArrayUtils.isEmpty(newsIds)) {

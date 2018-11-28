@@ -79,4 +79,21 @@
 &emsp;&emsp;对于前面例子中的FXNewsProvider来说，在使用IoC重构之前，若果没有需求变动，看起来和用起来都没什么问题。但是，一旦多添加逻辑，问题可能
 就来了。
 <br>
-&emsp;&emsp;如果又新增加一个需求，
+&emsp;&emsp;如果又新增加一个需求，现在又新增一个新闻服务了，这个新闻服务是MarketWin24。此时如何处理呢，毫无疑问，应该先根据MarketWin24的服务
+接口提供一个MarketWin24NewListener实现，用来接收新闻；其次，因为都是相同的数据访问逻辑，所以原来的DowJonesNewsPersistent可以重用，这个暂时
+不管。最后就是主要的业务处理对象了：FXNewsProvider。因为我们之前没有用IoC，所以，现在的对象是跟DowJonesNewsListener是绑定的，我们无法重用这
+个类。为了解决这个问题，我们可能要重新实现一个继承自FXNewsProvider的MarketWin24NewsProvider，或者干脆重新写一个类似的功能。
+<br>
+&emsp;&emsp;而使用IoC后，面对同样的需求，我们完全不用做任何改动，就直接使用FXNewsProvider。因为不管是DowJones还是MarketWin24，对于我们的
+系统来说，处理逻辑实际上应该是一样的：根据各个公司的连接接口取得新闻，然后将获取的新闻存入数据库。因此，我们只需要根据MarketWin24的新闻服务接口，
+为MarketWin24的FXNewsProvider提供相应的MarketWin24NewsListener注入就可以了。如下使用：
+    
+    FXNewsProvider dowJonesNewsProvider = new FXNewsProvider(new DowJonesNewsListener(), new DowJonesNewsPersistent());
+    
+    FXNewsProvider marketWin24NewsProvider = new FXNewsProvider(new MarketWin24NewsListener(), new DowJonesNewsPersistent());
+
+&emsp;&emsp;看！使用IoC后，FXNewsProvider可以重用，而不必因为添加新闻来源去重新实现新的FXNewsProvider。实际上，只需要给出特定的IFXNewsListener
+实现即可。
+<br>
+&emsp;&emsp;如果用一句话来概括IoC可以带给我们什么，那么我希望是，IoC是一种可以帮助我们解耦各业务对象间依赖关系的对象绑定方式！
+
