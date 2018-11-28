@@ -3,6 +3,7 @@
 一个提供了IoC支持的轻量级容器，除了基本的IoC支持，它作为轻量级容器还提供了IoC之外的支持。如在Spring的IoC容器之上，Spring还提供了相应的AOP框架
 支持、企业级服务集成等服务。Spring的IoC容器和IoC Service Provider所提供的服务存在一定的交集。<br>
 ![](image/beanfactory01.png)
+
 &emsp;&emsp;提供了两种容器类型：BeanFactory和ApplicationContext.
 
 - **BeanFactory**：基础类型IoC容器，提供完整的IoC服务支持。如果没有特殊指定，默认使用延迟初始化策略(lazy-load)。只有客户端对象在需要访问某个受管
