@@ -66,7 +66,6 @@ BeanFactory来说，ApplicationContext要求更多的系统资源，启动时长
 这些信息。而BeanFactory支持常用的三种方式。
 - 直接编码方式：其实，把编码方式单独作为一种方式并不十分恰当，因为无论何种方式，最终都需要编码才能落实。不过通过这些编码可以让我们更加清楚BeanFactory
 在底层是如何运作的。
-
     
         public static void main(String[] args) {
             DefaultListableBeanFactory beanRegistry = new DefaultListableBeanFactory();//构造工厂
