@@ -2,7 +2,6 @@
 &emsp;&emsp;Spring的IoC容器是一个IoC Service Provider，但是，这只是它被冠以IoC之名的部分原因，我们不能忽略的是“容器”。Spring的IoC容器是
 一个提供了IoC支持的轻量级容器，除了基本的IoC支持，它作为轻量级容器还提供了IoC之外的支持。如在Spring的IoC容器之上，Spring还提供了相应的AOP框架
 支持、企业级服务集成等服务。Spring的IoC容器和IoC Service Provider所提供的服务存在一定的交集。
-![](image/beanfactory01.png)
 <div align="center"><img src="image/beanfactory01.png"/></div>
 
 &emsp;&emsp;提供了两种容器类型：BeanFactory和ApplicationContext.
