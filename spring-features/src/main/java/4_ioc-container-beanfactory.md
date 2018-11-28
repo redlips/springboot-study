@@ -8,6 +8,7 @@
 
 - **BeanFactory**：基础类型IoC容器，提供完整的IoC服务支持。如果没有特殊指定，默认使用延迟初始化策略(lazy-load)。只有客户端对象在需要访问某个受管
 对象的时候，才对该对象进行初始化以及依赖注入操作。所以，相对来说，容器启动初期速度较快，所需的资源也有限。
+
 - **ApplicationContext**：ApplicationContext是在BeanFactory的基础上构建，是相对比较高级的容器实现。除了拥有BeanFactory的所有支持，它还提供
 了其它高级的特性，比如事件发布、国际化信息支持等。ApplicationContext所管理的对象，在该类型容器启动之后，默认全部初始化并绑定完成。所以，相对于
 BeanFactory来说，ApplicationContext要求更多的系统资源，启动时长相对要比BeanFactory要长一些。二者的关系图：<br>
