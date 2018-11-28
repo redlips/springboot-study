@@ -5,7 +5,6 @@
 ![](image/beanfactory01.png)
 
 &emsp;&emsp;提供了两种容器类型：BeanFactory和ApplicationContext.
-
 - **BeanFactory**：基础类型IoC容器，提供完整的IoC服务支持。如果没有特殊指定，默认使用延迟初始化策略(lazy-load)。只有客户端对象在需要访问某个受管
 对象的时候，才对该对象进行初始化以及依赖注入操作。所以，相对来说，容器启动初期速度较快，所需的资源也有限。
 
