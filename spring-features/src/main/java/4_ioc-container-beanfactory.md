@@ -75,7 +75,6 @@ BeanFactory来说，ApplicationContext要求更多的系统资源，启动时长
         newsProvider.getAndPersistNews();
     
     }
-    
     public static BeanFactory bindViaCode(BeanDefinitionRegistry  registry) {
         AbstractBeanDefinition newsProvider = new RootBeanDefinition(FXNewsProvider.class);
         AbstractBeanDefinition newsListener = new RootBeanDefinition(DowJonesNewsListener.class);
