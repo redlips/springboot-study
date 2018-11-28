@@ -66,40 +66,39 @@ BeanFactory来说，ApplicationContext要求更多的系统资源，启动时长
 这些信息。而BeanFactory支持常用的三种方式。
 - 直接编码方式：其实，把编码方式单独作为一种方式并不十分恰当，因为无论何种方式，最终都需要编码才能落实。不过通过这些编码可以让我们更加清楚BeanFactory
 在底层是如何运作的。
+```    
+public static void main(String[] args) {
+    DefaultListableBeanFactory beanRegistry = new DefaultListableBeanFactory();//构造工厂
+    BeanFactory container = bindViaCode(beanRegistry);
+    FXNewsProvider newsProvider = (FXNewsProvider) container.getBean("djNewsProvider");
+    newsProvider.getAndPersistNews();
+}
+public static BeanFactory bindViaCode(BeanDefinitionRegistry  registry) {
+    AbstractBeanDefinition newsProvider = new RootBeanDefinition(FXNewsProvider.class);
+    AbstractBeanDefinition newsListener = new RootBeanDefinition(DowJonesNewsListener.class);
+    AbstractBeanDefinition newsPersistent = new RootBeanDefinition(DowJonesNewsPersistent.class);
 
-    
-    public static void main(String[] args) {
-        DefaultListableBeanFactory beanRegistry = new DefaultListableBeanFactory();//构造工厂
-        BeanFactory container = bindViaCode(beanRegistry);
-        FXNewsProvider newsProvider = (FXNewsProvider) container.getBean("djNewsProvider");
-        newsProvider.getAndPersistNews();
-    }
-    public static BeanFactory bindViaCode(BeanDefinitionRegistry  registry) {
-        AbstractBeanDefinition newsProvider = new RootBeanDefinition(FXNewsProvider.class);
-        AbstractBeanDefinition newsListener = new RootBeanDefinition(DowJonesNewsListener.class);
-        AbstractBeanDefinition newsPersistent = new RootBeanDefinition(DowJonesNewsPersistent.class);
-    
-        // 将Bean定义注册到容器中
-        registry.registerBeanDefinition("djNewsProvider", newsProvider);
-        registry.registerBeanDefinition("djNewsListener", newsListener);
-        registry.registerBeanDefinition("djNewsPersistent", newsPersistent);
-    
-        // 指定依赖关系
-        // 1.通过构造方法注入方式
-        ConstructorArgumentValues argumentValues = new ConstructorArgumentValues();
-        argumentValues.addIndexedArgumentValue(0, newsListener);
-        argumentValues.addIndexedArgumentValue(1, newsPersistent);
-        newsProvider.setConstructorArgumentValues(argumentValues);
-        // 2.或者通过setter方法注入方式
-        MutablePropertyValues propertyValues = new MutablePropertyValues();
-        propertyValues.addPropertyValue(new PropertyValue("newsListener", newsListener));
-        propertyValues.addPropertyValue(new PropertyValue("newsPersistent", newsPersistent));
-        newsProvider.setPropertyValues(propertyValues);
-    
-        // 绑定完成
-        return (BeanFactory) registry;
-    }
+    // 将Bean定义注册到容器中
+    registry.registerBeanDefinition("djNewsProvider", newsProvider);
+    registry.registerBeanDefinition("djNewsListener", newsListener);
+    registry.registerBeanDefinition("djNewsPersistent", newsPersistent);
 
+    // 指定依赖关系
+    // 1.通过构造方法注入方式
+    ConstructorArgumentValues argumentValues = new ConstructorArgumentValues();
+    argumentValues.addIndexedArgumentValue(0, newsListener);
+    argumentValues.addIndexedArgumentValue(1, newsPersistent);
+    newsProvider.setConstructorArgumentValues(argumentValues);
+    // 2.或者通过setter方法注入方式
+    MutablePropertyValues propertyValues = new MutablePropertyValues();
+    propertyValues.addPropertyValue(new PropertyValue("newsListener", newsListener));
+    propertyValues.addPropertyValue(new PropertyValue("newsPersistent", newsPersistent));
+    newsProvider.setPropertyValues(propertyValues);
+
+    // 绑定完成
+    return (BeanFactory) registry;
+}
+```
 &emsp;&emsp;BeanFactory只是一个接口，我们最终需要该接口的实现类进行实际的Bean管理，DefaultListableBeanFactory就是一个比较通用的BeanFactory
 实现类。它是间接地实现了BeanFactory接口，还实现了BeanDefinitionRegistry接口，该接口才是在BeanFactory的实现中担当Bean的注册和管理的角色。
 基本上BeanFactory只定义了如何访问容器内部Bean的方法，而它的具体实现类负责具体的Bean注册及管理的工作。BeanDefinitionRegistry接口抽象了Bean
