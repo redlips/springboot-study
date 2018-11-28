@@ -1,16 +1,14 @@
 ## IoC容器之BeanFactory
 &emsp;&emsp;Spring的IoC容器是一个IoC Service Provider，但是，这只是它被冠以IoC之名的部分原因，我们不能忽略的是“容器”。Spring的IoC容器是
 一个提供了IoC支持的轻量级容器，除了基本的IoC支持，它作为轻量级容器还提供了IoC之外的支持。如在Spring的IoC容器之上，Spring还提供了相应的AOP框架
-支持、企业级服务集成等服务。Spring的IoC容器和IoC Service Provider所提供的服务存在一定的交集。
-<br>
+支持、企业级服务集成等服务。Spring的IoC容器和IoC Service Provider所提供的服务存在一定的交集。<br>
 ![](image/beanfactory01.png)
 
-&emsp;&emsp;提供了两种容器类型：BeanFactory和ApplicationContext.
-<br>
-- BeanFactory：基础类型IoC容器，提供完整的IoC服务支持。如果没有特殊指定，默认使用延迟初始化策略(lazy-load)。只有客户端对象在需要访问某个受管
+&emsp;&emsp;提供了两种容器类型：BeanFactory和ApplicationContext.<br>
+- **BeanFactory**：基础类型IoC容器，提供完整的IoC服务支持。如果没有特殊指定，默认使用延迟初始化策略(lazy-load)。只有客户端对象在需要访问某个受管
 对象的时候，才对该对象进行初始化以及依赖注入操作。所以，相对来说，容器启动初期速度较快，所需的资源也有限。
 
-- ApplicationContext：ApplicationContext是在BeanFactory的基础上构建，是相对比较高级的容器实现。除了拥有BeanFactory的所有支持，它还提供
+- **ApplicationContext**：ApplicationContext是在BeanFactory的基础上构建，是相对比较高级的容器实现。除了拥有BeanFactory的所有支持，它还提供
 了其它高级的特性，比如事件发布、国际化信息支持等。ApplicationContext所管理的对象，在该类型容器启动之后，默认全部初始化并绑定完成。所以，相对于
 BeanFactory来说，ApplicationContext要求更多的系统资源，启动时长相对要比BeanFactory要长一些。二者的关系图：
 ![](image/beanfactory02.png)
@@ -64,8 +62,7 @@ BeanFactory来说，ApplicationContext要求更多的系统资源，启动时长
 
 &emsp;&emsp;BeanFactory作为一个IoC Service Provider，为了明确管理各个业务对象以及业务对象间的依赖绑定关系，同样需要某种途径需要记录和管理
 这些信息。而BeanFactory支持常用的三种方式。
-- **直接编码方式**<br>
-&emsp;&emsp;其实，把编码方式单独作为一种方式并不十分恰当，因为无论何种方式，最终都需要编码才能落实。不过通过这些编码可以让我们更加清楚BeanFactory
+- **直接编码方式**：其实，把编码方式单独作为一种方式并不十分恰当，因为无论何种方式，最终都需要编码才能落实。不过通过这些编码可以让我们更加清楚BeanFactory
 在底层是如何运作的。
 ```    
 public static void main(String[] args) {
@@ -110,6 +107,5 @@ public static BeanFactory bindViaCode(BeanDefinitionRegistry  registry) {
 &emsp;&emsp;注意：最后一行的强制转换是在特定场景的，因为DefaultListableBeanFactory同时实现了BeanFactory和BeanDefinitionRegistry接口
 所以，强制转换是不会出现问题。单纯的BeanDefinitionRegistry是无法强制转换到BeanFactory类型的。
 
-- **外部配置文件方式**<br>
-&emsp;&emsp;Spring的IoC容器支持两种配置文件格式properties文件格式、XML文件格式。当然也可以引入自己的格式。<br>
+- **外部配置文件方式**：Spring的IoC容器支持两种配置文件格式properties文件格式、XML文件格式。当然也可以引入自己的格式。<br>
 &emsp;&emsp;采用外部文件时，Spring的IoC容器有一个统一的处理方式。通常情况下，需要根据不同的外部文件格式，给出相应的BeanDefinitionReader实现类
