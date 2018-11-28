@@ -25,8 +25,7 @@ BeanFactory来说，ApplicationContext要求更多的系统资源，启动时长
 ### 使用BeanFactory后的改观
 &emsp;&emsp;确切的说，拥有BeanFactory之后，对于系统的设计和业务逻辑的处理并没有什么影响。而唯一的不同就是对象间依赖关系的解决方式改变了。现在需要
 什么对象，直接让BeanFactory提供就可以了。所以简单点说，拥有BeanFactory之后，要使用IoC设计模式进行系统业务对象的开发。（实际上，即使不使用BeanFactory
-之类的轻量级容器支持开发，开发中也尽量使用IoC模式）
-<br>
+之类的轻量级容器支持开发，开发中也尽量使用IoC模式）<br>
 &emsp;&emsp;拥有BeanFactory之后，对象的创建和对象间依赖关系的绑定都由BeanFactory来完成。但是如何做，还是需要通过某种方式来告诉它，例如通过XML
 文件来注册并管理对象间的依赖关系。
     
@@ -55,7 +54,6 @@ BeanFactory来说，ApplicationContext要求更多的系统资源，启动时长
     FXNewsProvider newsProvider = (FXNewsProvider)container.getBean("djNewsProvider");
 
 ### BeanFactory的对象注册和依赖绑定方式
-
 &emsp;&emsp;BeanFactory作为一个IoC Service Provider，为了明确管理各个业务对象以及业务对象间的依赖绑定关系，同样需要某种途径需要记录和管理
 这些信息。而BeanFactory支持常用的三种方式。
 - **直接编码方式**：其实，把编码方式单独作为一种方式并不十分恰当，因为无论何种方式，最终都需要编码才能落实。不过通过这些编码可以让我们更加清楚BeanFactory
@@ -96,12 +94,11 @@ public static BeanFactory bindViaCode(BeanDefinitionRegistry  registry) {
 &emsp;&emsp;BeanFactory只是一个接口，我们最终需要该接口的实现类进行实际的Bean管理，DefaultListableBeanFactory就是一个比较通用的BeanFactory
 实现类。它是间接地实现了BeanFactory接口，还实现了BeanDefinitionRegistry接口，该接口才是在BeanFactory的实现中担当Bean的注册和管理的角色。
 基本上BeanFactory只定义了如何访问容器内部Bean的方法，而它的具体实现类负责具体的Bean注册及管理的工作。BeanDefinitionRegistry接口抽象了Bean
-的注册逻辑。通常，只有具体的BeanFactory实现类才实现这个接口来管理Bean。
-<br>
+的注册逻辑。通常，只有具体的BeanFactory实现类才实现这个接口来管理Bean。<br>
 ![](image/beanfactory03.png)
-<br>
+
 &emsp;&emsp;注意：最后一行的强制转换是在特定场景的，因为DefaultListableBeanFactory同时实现了BeanFactory和BeanDefinitionRegistry接口
 所以，强制转换是不会出现问题。单纯的BeanDefinitionRegistry是无法强制转换到BeanFactory类型的。
 
-- **外部配置文件方式**：Spring的IoC容器支持两种配置文件格式properties文件格式、XML文件格式。当然也可以引入自己的格式。<br>
-&emsp;&emsp;采用外部文件时，Spring的IoC容器有一个统一的处理方式。通常情况下，需要根据不同的外部文件格式，给出相应的BeanDefinitionReader实现类
+- **外部配置文件方式**：Spring的IoC容器支持两种配置文件格式properties文件格式、XML文件格式，当然也可以引入自己的格式。采用外部文件时，
+Spring的IoC容器有一个统一的处理方式。通常情况下，需要根据不同的外部文件格式，给出相应的BeanDefinitionReader实现类
