@@ -64,7 +64,8 @@ BeanFactory来说，ApplicationContext要求更多的系统资源，启动时长
 
 &emsp;&emsp;BeanFactory作为一个IoC Service Provider，为了明确管理各个业务对象以及业务对象间的依赖绑定关系，同样需要某种途径需要记录和管理
 这些信息。而BeanFactory支持常用的三种方式。
-- 直接编码方式：其实，把编码方式单独作为一种方式并不十分恰当，因为无论何种方式，最终都需要编码才能落实。不过通过这些编码可以让我们更加清楚BeanFactory
+- **直接编码方式**<br>
+其实，把编码方式单独作为一种方式并不十分恰当，因为无论何种方式，最终都需要编码才能落实。不过通过这些编码可以让我们更加清楚BeanFactory
 在底层是如何运作的。
 ```    
 public static void main(String[] args) {
@@ -109,6 +110,6 @@ public static BeanFactory bindViaCode(BeanDefinitionRegistry  registry) {
 &emsp;&emsp;注意：最后一行的强制转换是在特定场景的，因为DefaultListableBeanFactory同时实现了BeanFactory和BeanDefinitionRegistry接口
 所以，强制转换是不会出现问题。单纯的BeanDefinitionRegistry是无法强制转换到BeanFactory类型的。
 
-- 外部配置文件方式<br>
+- **外部配置文件方式**<br>
 &emsp;&emsp;Spring的IoC容器支持两种配置文件格式properties文件格式、XML文件格式。当然也可以引入自己的格式。<br>
 &emsp;&emsp;采用外部文件时，Spring的IoC容器有一个统一的处理方式。通常情况下，需要根据不同的外部文件格式，给出相应的BeanDefinitionReader实现类
