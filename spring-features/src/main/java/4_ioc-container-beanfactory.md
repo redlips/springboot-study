@@ -24,7 +24,6 @@ BeanFactory来说，ApplicationContext要求更多的系统资源，启动时长
 的对象方法接口。对于独立的应用程序，这些主入口是和容器API直接耦合的
 
 ### 使用BeanFactory后的改观
-
 &emsp;&emsp;确切的说，拥有BeanFactory之后，对于系统的设计和业务逻辑的处理并没有什么影响。而唯一的不同就是对象间依赖关系的解决方式改变了。现在需要
 什么对象，直接让BeanFactory提供就可以了。所以简单点说，拥有BeanFactory之后，要使用IoC设计模式进行系统业务对象的开发。（实际上，即使不使用BeanFactory
 之类的轻量级容器支持开发，开发中也尽量使用IoC模式）
