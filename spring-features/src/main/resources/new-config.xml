@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+    <context:component-scan base-package="com.redlips.spring.features"/>
+
+    <bean id="djNewsProvider" class="com.redlips.spring.features.ioc01.FXNewsProvider" name="/news/djNews,provider">
+        <constructor-arg index="0" ref="djNewsListener"/>
+        <constructor-arg index="1" ref="djNewsPersistent"/>
+        <property name="newsListenerBeanName">
+            <idref bean="djNewsListener"/>
+        </property>
+    </bean>
+
+    <bean id="djNewsListener" class="com.redlips.spring.features.ioc01.service.impl.DowJonesNewsListener"/>
+    <bean id="djNewsPersistent" class="com.redlips.spring.features.ioc01.service.impl.DowJonesNewsPersistent"/>
+
+    <bean id="mockDemo" class="com.redlips.spring.features.ioc.beanfactory.MockDemoObject">
+        <property name="param1">
+            <list>
+                <value>something</value>
+                <ref bean="djNewsListener"></ref>
+                <bean class="com.redlips.spring.features.ioc01.service.impl.DowJonesNewsListener"></bean>
+            </list>
+        </property>
+        <property name="param2">
+            <list>
+                <value>stringValue1</value>
+                <value>stringValue2</value>
+            </list>
+        </property>
+        <property name="valueSet">
+            <set>
+                <value>someting</value>
+                <ref bean="djNewsListener"/>
+                <bean class="com.redlips.spring.features.ioc01.service.impl.DowJonesNewsListener"/>
+            </set>
+        </property>
+        <property name="mapping">
+            <map>
+                <entry key="strValueKey">
+                    <value>strValue</value>
+                </entry>
+                <entry>
+                    <!-- 此时key是一个对象引用 -->
+                    <key>
+                        <ref bean="provider"/>
+                    </key>
+                    <ref bean="djNewsListener"></ref>
+                </entry>
+                <!-- 此时key是一个对象引用 -->
+                <entry key-ref="djNewsPersistent">
+                    <list>
+                        <value>value1</value>
+                        <value>value2</value>
+                    </list>
+                </entry>
+            </map>
+        </property>
+        <property name="emailAddrs">
+            <props>
+                <prop key="author">xxx@.163.com</prop>
+                <prop key="support">suport@qq.com</prop>
+            </props>
+        </property>
+
+    </bean>
+</beans>

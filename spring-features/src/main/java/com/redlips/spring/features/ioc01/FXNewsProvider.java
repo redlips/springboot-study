@@ -6,6 +6,8 @@ import com.redlips.spring.features.ioc01.service.IFXNewsListener;
 import com.redlips.spring.features.ioc01.service.IFXNewsPersistent;
 import com.redlips.spring.features.ioc01.pojo.FXNewsBean;
 import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * @author 花落孤忆
@@ -19,14 +21,53 @@ import org.apache.commons.lang3.ArrayUtils;
  *
  * 假设该类是做以上工作的
  */
+@Component
 public class FXNewsProvider {
+    public IFXNewsListener getNewsListener() {
+        return newsListener;
+    }
+
+    public void setNewsListener(IFXNewsListener newsListener) {
+        this.newsListener = newsListener;
+    }
+
+    public IFXNewsPersistent getNewsPersistent() {
+        return newsPersistent;
+    }
+
+    public void setNewsPersistent(IFXNewsPersistent newsPersistent) {
+        this.newsPersistent = newsPersistent;
+    }
+
+    public String getNewsListenerBeanName() {
+        return newsListenerBeanName;
+    }
+
+    public void setNewsListenerBeanName(String newsListenerBeanName) {
+        this.newsListenerBeanName = newsListenerBeanName;
+    }
+
+    public String getNewsPersistentBeanName() {
+        return newsPersistentBeanName;
+    }
+
+    public void setNewsPersistentBeanName(String newsPersistentBeanName) {
+        this.newsPersistentBeanName = newsPersistentBeanName;
+    }
+
     // FXNewsProvider需要依赖IFXNewsListener来抓取新闻，依赖IFXNewsPersistent来存储新闻
 
     // 监听新闻
+    @Autowired
     private IFXNewsListener newsListener;
     // 同步新闻到库的接口
+    @Autowired
     private IFXNewsPersistent newsPersistent;
 
+    // Bean的名称
+    private String newsListenerBeanName;
+    // Bean的名称
+    private String newsPersistentBeanName;
     /**
      * 假设默认使用（道琼斯新闻社）的新闻，我们需要提供上面两个接口的实现类，通常需要在构造函数中构造FXNewsProvider依赖的这两个类，这种被依赖
      * 的类、或对象，简称为“依赖类”、“依赖对象”。
@@ -43,6 +84,7 @@ public class FXNewsProvider {
     public FXNewsProvider(IFXNewsListener newsListener, IFXNewsPersistent newsPersistent) {
         this.newsListener = newsListener;
         this.newsPersistent = newsPersistent;
+        System.out.println("FXNewsProvider 通过构造方法构建成功了");
     }
 
     /**
