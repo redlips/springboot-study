@@ -10,6 +10,9 @@
         <module>springboot-features</module>
         <module>java-features</module>
         <module>spring-features</module>
+        <module>Java7-concurrency-cookbook</module>
+        <module>springboot-redis</module>
+        <module>data-structure</module>
     </modules>
     <packaging>pom</packaging>
 
