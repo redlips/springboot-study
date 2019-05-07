@@ -1,26 +1,22 @@
 package com.redlips.spring.features;
 
-import com.redlips.spring.features.ioc.beanfactory.MockDemoObject;
-import com.redlips.spring.features.ioc01.FXNewsProvider;
-import com.redlips.spring.features.ioc01.service.impl.DowJonesNewsListener;
-import com.redlips.spring.features.ioc01.service.impl.DowJonesNewsPersistent;
+import com.redlips.spring.features.ioc.beanfactory.beanfactory0437.number01.MockNewsPersistent3;
+import com.redlips.spring.features.base.FXNewsProvider;
+import com.redlips.spring.features.ioc.iocserviceprovider.DowJonesNewsListener;
+import com.redlips.spring.features.ioc.iocserviceprovider.DowJonesNewsPersistent;
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.PropertyValue;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.config.ConstructorArgumentValues;
 import org.springframework.beans.factory.support.*;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
-import org.springframework.beans.factory.xml.XmlBeanFactory;
-import org.springframework.core.io.ClassPathResource;
-
-import java.util.Map;
 
 /**
  * @author 花落孤忆
  * @create 2018-11-27 11:48
  * @description
  */
-public class MainTest {
+public class BeanFactoryTest {
         public static void main(String[] args) {
             DefaultListableBeanFactory beanRegistry = new DefaultListableBeanFactory();//构造工厂
 //            1.直接编码的方式
@@ -41,11 +37,28 @@ public class MainTest {
 //            bean.getAndPersistNews();
 
 //            4.通过注解的方式
+//            BeanFactory container = bindViaXMLFile(beanRegistry);
+//            MockNewsPersistent bean = (MockNewsPersistent) container.getBean("mockpersistent");
+//            System.out.println(container.getBean("newsBean"));
+//            System.out.println(container.getBean("newsBean"));
+//            bean.persistNews();
+//            bean.persistNews();
+
+//            5.MockNewsPersistent2实例运行
+//            BeanFactory container = bindViaXMLFile(beanRegistry);
+//            MockNewsPersistent2 bean = (MockNewsPersistent2) container.getBean("mockpersistent2");
+//            System.out.println(container.getBean("newsBean"));
+//            System.out.println(container.getBean("newsBean"));
+//            bean.persistNews();
+//            bean.persistNews();
+
+//            6.MockNewsPersistent3实例运行
             BeanFactory container = bindViaXMLFile(beanRegistry);
-            MockDemoObject bean = (MockDemoObject) container.getBean("mockDemo");
-            System.out.println(bean.getParam2());
-            Map mapping = bean.getMapping();
-            System.out.println(mapping.toString());
+            MockNewsPersistent3 bean = (MockNewsPersistent3) container.getBean("mockpersistent3");
+            System.out.println(container.getBean("newsBean"));
+            System.out.println(container.getBean("newsBean"));
+            bean.persistNews();
+            bean.persistNews();
         }
 
     /**

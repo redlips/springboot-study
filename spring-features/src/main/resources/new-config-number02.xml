@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+    <context:component-scan base-package="com.redlips.spring.features"/>
+
+    <bean id="djNewsProvider" class="com.redlips.spring.features.base.FXNewsProvider">
+        <constructor-arg index="0" ref="djNewsListener"/>
+        <constructor-arg index="1" ref="djNewsPersistent"/>
+        <replaced-method name="getAndPersistNews" replacer="providerReplacer">
+            <!-- 可以用来指定方法中的参数 -->
+            <arg-type></arg-type>
+        </replaced-method>
+    </bean>
+
+    <bean id="providerReplacer" class="com.redlips.spring.features.ioc.beanfactory.beanfactory0437.number02.FXNewsProviderMethodReplacer"/>
+    <bean id="djNewsListener" class="com.redlips.spring.features.ioc.iocserviceprovider.DowJonesNewsListener"/>
+    <bean id="djNewsPersistent" class="com.redlips.spring.features.ioc.iocserviceprovider.DowJonesNewsPersistent"/>
+</beans>

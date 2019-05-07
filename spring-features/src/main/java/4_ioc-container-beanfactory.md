@@ -128,7 +128,7 @@ PropertiesBeanDefinitionReader来做。<br>
 &emsp;&emsp;通过XML文件方式
 
     <beans>
-        <bean id="djNewsProvider" class="com.redlips.spring.features.ioc01.FXNewsProvider">
+        <bean id="djNewsProvider" class="com.redlips.spring.features.base.FXNewsProvider">
             <constructor-arg index="0">
                 <ref bean="djNewsListener"/>
             </constructor-arg>
@@ -136,8 +136,8 @@ PropertiesBeanDefinitionReader来做。<br>
                 <ref bean="djNewsPersistent"/>
             </constructor-arg>
         </bean>
-        <bean id="djNewsListener" class="com.redlips.spring.features.ioc01.service.impl.DowJonesNewsListener"/>
-        <bean id="djNewsPersistent" class="com.redlips.spring.features.ioc01.service.impl.DowJonesNewsPersistent"/>
+        <bean id="djNewsListener" class="com.redlips.spring.features.ioc.iocserviceprovider.DowJonesNewsListener"/>
+        <bean id="djNewsPersistent" class="com.redlips.spring.features.ioc.iocserviceprovider.DowJonesNewsPersistent"/>
     </beans>
     
     /**
@@ -230,7 +230,7 @@ bean/import/alias标签<br>
 属性可以指定bean的别名(alias)，而且比较灵活，里面可以包含逗号、空格、冒号分割指定多个名字。
 2. class属性。每个注册到容器的对象都需要通过class属性指定其类型，在大部分情况下该属性是必须的。仅在少数情况下不用指定，如在使用抽象配置模板的情况下。
 ```
-<bean id="djNewsProvider" class="com.redlips.spring.features.ioc01.FXNewsProvider" name="/news/djNews,provider">
+<bean id="djNewsProvider" class="com.redlips.spring.features.base.FXNewsProvider" name="/news/djNews,provider">
 </bean>
 ```
 
@@ -239,7 +239,7 @@ bean/import/alias标签<br>
   - 构造方法注入，为当前对象注入所依赖的对象需要使用\<constructor-arg\>标签。ref属性用来指定所引用的bean。当无法和构造方法参数列表一一对应时
   就需要其它属性来辅助。type属性指定参数类型，index属性指定参数位置(从0开始)
   ```
-  <bean id="djNewsProvider" class="com.redlips.spring.features.ioc01.FXNewsProvider" name="/news/djNews,provider">
+  <bean id="djNewsProvider" class="com.redlips.spring.features.base.FXNewsProvider" name="/news/djNews,provider">
       <constructor-arg index="0" ref="djNewsListener"/>
       <constructor-arg index="1" ref="djNewsPersistent"/>
   </bean>
@@ -247,12 +247,12 @@ bean/import/alias标签<br>
   - setter注入，提供的是\<property\>元素，name属性指定被注入对象的变量名，之后通过value或者ref属性或者内嵌其它元素来指定具体依赖对象引用或值。
   如果只是使用property元素进行依赖注入的话，需要提供空的构造方法。
   ```
-  <bean id="djNewsProvider" class="com.redlips.spring.features.ioc01.FXNewsProvider" name="/news/djNews,provider">
+  <bean id="djNewsProvider" class="com.redlips.spring.features.base.FXNewsProvider" name="/news/djNews,provider">
       <property name="newsListener" ref="djNewsListener"/>
       <property name="newsPersistent" ref="djNewsPersistent"/>
   </bean>
   或者混用
-  <bean id="djNewsProvider" class="com.redlips.spring.features.ioc01.FXNewsProvider" name="/news/djNews,provider">
+  <bean id="djNewsProvider" class="com.redlips.spring.features.base.FXNewsProvider" name="/news/djNews,provider">
       <constructor-arg index="0" ref="djNewsListener"/>
       <property name="newsPersistent" ref="djNewsPersistent"/>
   </bean>
@@ -296,10 +296,10 @@ bean/import/alias标签<br>
     - 内部\<bean\>。使用ref可以引用容器中独立定义的对象。但有时，我们定义的对象只有一个对象引用，或者某个对象定义我们不想其它对象通过ref引用。
     这时可以使用内嵌bean，将这个私有的对象bean定义在局部当前对象。
     ```
-    <bean id="djNewsProvider" class="com.redlips.spring.features.ioc01.FXNewsProvider" name="/news/djNews,provider">
+    <bean id="djNewsProvider" class="com.redlips.spring.features.base.FXNewsProvider" name="/news/djNews,provider">
         <constructor-arg index="1" ref="djNewsPersistent"/>
         <constructor-arg index="0">
-            <bean class="com.redlips.spring.features.ioc01.service.impl.DowJonesNewsListener">
+            <bean class="com.redlips.spring.features.ioc.iocserviceprovider.DowJonesNewsListener">
             </bean>
         </constructor-arg>
     </bean>
@@ -315,12 +315,12 @@ bean/import/alias标签<br>
         ....
     }
     
-    <bean id="mockDemo" class="com.redlips.spring.features.ioc.beanfactory.MockDemoObject">
+    <bean id="mockDemo" class="com.redlips.spring.features.ioc.beanfactory.beanfactory0431.MockDemoObject">
         <property name="param1">
             <list>
                 <value>something</value>
                 <ref bean="djNewsListener"></ref>
-                <bean class="com.redlips.spring.features.ioc01.service.impl.DowJonesNewsListener"></bean>
+                <bean class="com.redlips.spring.features.ioc.iocserviceprovider.DowJonesNewsListener"></bean>
             </list>
         </property>
         <property name="param2">
@@ -346,7 +346,7 @@ bean/import/alias标签<br>
         <set>
             <value>someting</value>
             <ref bean="djNewsListener"/>
-            <bean class="com.redlips.spring.features.ioc01.service.impl.DowJonesNewsListener"/>
+            <bean class="com.redlips.spring.features.ioc.iocserviceprovider.DowJonesNewsListener"/>
             <list>
                 ...
             </list>
@@ -498,7 +498,7 @@ bean/import/alias标签<br>
 - **自定义scope类型**：Spring2.0之后，容器提供了对scope的扩展，可以根据自己的需要来自定义scope，需要说明的是，默认的singleton和prototype是
 硬编码到代码中的，而request、session、global session和自定义的scope则属于可扩展的scope。他们都实现了org.springframework.beans.factory.config.Scope
 接口。
-- **工厂方法与FactoryBean**：在强调“面向接口”编程的同时，有一点需要注意：虽然对象可以声明接口来避免对特定接口实现类的过度耦合，但总归是需要一种
+- **工厂方法与FactoryBean(factory-bean、factory-method属性应用)**：在强调“面向接口”编程的同时，有一点需要注意：虽然对象可以声明接口来避免对特定接口实现类的过度耦合，但总归是需要一种
 方式将声明依赖接口的对象与接口实现类关联起来。否则，该声明的接口便没有了任何意义。
 ```
 public class Foo {
@@ -524,5 +524,35 @@ public class Foo {
 }
 ```
 &emsp;&emsp;针对使用工厂模式实例化对象的方式，Spring的IoC也提供了支持，只需要将工厂类所返回的具体接口的实现类注入到主体对象即可（这里主体对象是Foo）
-
-  - - 
+  - - 静态工厂方法(Static Factory Method)。假设某第三方库发布了BarInterface,为了向使用该接口的客户端对象屏蔽以后可能对BarInterface实现类的
+  变动，同时还提供了一个静态工厂方法实现类StaticBarInterfaceFactory。
+  ```
+  // 第一种模式：
+  public class StaticBarInterfaceFactory {
+    public static BarInterface getInstance() {
+        return new BarInterfaceImpl();
+    }
+  }
+  // 为了将该静态工厂方法类返回的实现类注入Foo,使用下面进行配置(setter方法注入)
+  <bean id="foo" class="....Foo">
+    <property name="barInterface">
+        <ref bean="bar"/>
+    </property>
+  </bean>
+  
+  <bean id="bar" class="...StaticBarInterfaceFactory" factory-method="getInstance"/>
+  
+  // 第二种模式：
+  // 也可以使用<constructor-arg>来指定工厂方法所需要的参数
+  public class StaticBarInterfaceFactory {
+      public static BarInterface getInstance(FooBar fooBar) {
+          return new BarInterfaceImpl(fooBar);
+      }
+  }
+  <bean id="bar" class="...StaticBarInterfaceFactory" factory-method="getInstance">
+    <constructor-arg>
+        <ref bean="fooBar"/>
+    </constructor-arg>
+  </bean>
+  <bean id="fooBar" class="...FooBar"/>
+  ```

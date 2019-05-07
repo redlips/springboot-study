@@ -1,4 +1,4 @@
-package com.redlips.spring.features.ioc01.pojo;
+package com.redlips.spring.features.pojo;
 
 /**
  * @author 花落孤忆

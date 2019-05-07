@@ -31,7 +31,7 @@ public class StackBasedArray {
     public String pop() {
         // 栈为空，直接返回null
         if (count == 0) return null;
-        // 返回下表为count - 1的元素，并将元素的格式-1
+        // 返回下标为count - 1的元素，并将元素的个数-1
         String temp = items[count - 1];
         --count;
         return temp;

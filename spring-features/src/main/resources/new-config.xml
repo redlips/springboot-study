@@ -9,7 +9,7 @@
        http://www.springframework.org/schema/context/spring-context.xsd">
     <context:component-scan base-package="com.redlips.spring.features"/>
 
-    <bean id="djNewsProvider" class="com.redlips.spring.features.ioc01.FXNewsProvider" name="/news/djNews,provider">
+    <bean id="djNewsProvider" class="com.redlips.spring.features.base.FXNewsProvider" name="/news/djNews,provider">
         <constructor-arg index="0" ref="djNewsListener"/>
         <constructor-arg index="1" ref="djNewsPersistent"/>
         <property name="newsListenerBeanName">
@@ -17,15 +17,15 @@
         </property>
     </bean>
 
-    <bean id="djNewsListener" class="com.redlips.spring.features.ioc01.service.impl.DowJonesNewsListener"/>
-    <bean id="djNewsPersistent" class="com.redlips.spring.features.ioc01.service.impl.DowJonesNewsPersistent"/>
+    <bean id="djNewsListener" class="com.redlips.spring.features.ioc.iocserviceprovider.DowJonesNewsListener"/>
+    <bean id="djNewsPersistent" class="com.redlips.spring.features.ioc.iocserviceprovider.DowJonesNewsPersistent"/>
 
-    <bean id="mockDemo" class="com.redlips.spring.features.ioc.beanfactory.MockDemoObject">
+    <bean id="mockDemo" class="com.redlips.spring.features.ioc.beanfactory.beanfactory0431.MockDemoObject">
         <property name="param1">
             <list>
                 <value>something</value>
                 <ref bean="djNewsListener"></ref>
-                <bean class="com.redlips.spring.features.ioc01.service.impl.DowJonesNewsListener"></bean>
+                <bean class="com.redlips.spring.features.ioc.iocserviceprovider.DowJonesNewsListener"></bean>
             </list>
         </property>
         <property name="param2">
@@ -38,7 +38,7 @@
             <set>
                 <value>someting</value>
                 <ref bean="djNewsListener"/>
-                <bean class="com.redlips.spring.features.ioc01.service.impl.DowJonesNewsListener"/>
+                <bean class="com.redlips.spring.features.ioc.iocserviceprovider.DowJonesNewsListener"/>
             </set>
         </property>
         <property name="mapping">
@@ -68,6 +68,44 @@
                 <prop key="support">suport@qq.com</prop>
             </props>
         </property>
-
     </bean>
+
+    <!-- beanfactory0436中的bean配置 -->
+    <bean id="nextDayDateDisplayer" class="com.redlips.spring.features.ioc.beanfactory.beanfactory0436.NextDayDateDisplayer">
+        <property name="dateOfNextDay">
+            <ref bean="nextDayDate"/>
+        </property>
+    </bean>
+    <bean id="nextDayDate" class="com.redlips.spring.features.ioc.beanfactory.beanfactory0436.NextDayDateFactoryBean">
+    </bean>
+
+    <!-- ============================== -->
+    <!-- beanfactory0437中的bean配置 -->
+    <bean id="newsBean" class="com.redlips.spring.features.pojo.FXNewsBean" scope="prototype"/>
+    <bean id="mockpersistent" class="com.redlips.spring.features.ioc.beanfactory.beanfactory0437.number01.MockNewsPersistent">
+        <!--<property name="newsBean">-->
+            <!--<ref bean="newsBean"/>-->
+        <!--</property>-->
+        <!-- 使用方法注入的方式 -->
+        <lookup-method name="getNewsBean" bean="newsBean"/>
+    </bean>
+
+    <!-- 使用BeanFactoryAware配置简化 -->
+    <bean id="mockpersistent2" class="com.redlips.spring.features.ioc.beanfactory.beanfactory0437.number01.MockNewsPersistent2">
+    </bean>
+
+    <!-- 使用ObjectFactoryCreatingFactoryBean -->
+    <bean id="newBeanFactory" class="org.springframework.beans.factory.config.ObjectFactoryCreatingFactoryBean">
+        <property name="targetBeanName">
+            <idref bean="newsBean"/>
+        </property>
+    </bean>
+    <bean id="mockpersistent3" class="com.redlips.spring.features.ioc.beanfactory.beanfactory0437.number01.MockNewsPersistent3">
+        <property name="objectFactory">
+            <ref bean="newBeanFactory"/>
+        </property>
+    </bean>
+
+    <!-- beanfactory0437-number02 -->
+
 </beans>

@@ -1,4 +1,4 @@
-package com.redlips.spring.features.ioc.beanfactory;
+package com.redlips.spring.features.ioc.beanfactory.beanfactory0431;
 
 import java.util.List;
 import java.util.Map;
@@ -8,7 +8,7 @@ import java.util.Set;
 /**
  * @author 花落孤忆
  * @create 2018-12-06 9:05
- * @description BeanFactory Demo
+ * @description BeanFactory Demo, XML配置中bean标签的讲解
  */
 public class MockDemoObject {
     private List param1;

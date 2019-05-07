@@ -1,7 +1,7 @@
-package com.redlips.spring.features.ioc01.service.impl;
+package com.redlips.spring.features.ioc.iocserviceprovider;
 
-import com.redlips.spring.features.ioc01.pojo.FXNewsBean;
-import com.redlips.spring.features.ioc01.service.IFXNewsPersistent;
+import com.redlips.spring.features.pojo.FXNewsBean;
+import com.redlips.spring.features.base.IFXNewsPersistent;
 import org.springframework.stereotype.Component;
 
 /**

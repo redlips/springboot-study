@@ -9,7 +9,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author qiaotong
@@ -52,4 +54,5 @@ public class ApplicationTests {
         Set<Object> range = redisTemplate.opsForZSet().range(key, 1, 2);
         System.out.println(range);
     }
+
 }

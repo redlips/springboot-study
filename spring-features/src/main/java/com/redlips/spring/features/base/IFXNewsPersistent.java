@@ -1,11 +1,11 @@
-package com.redlips.spring.features.ioc01.service;
+package com.redlips.spring.features.base;
 
-import com.redlips.spring.features.ioc01.pojo.FXNewsBean;
+import com.redlips.spring.features.pojo.FXNewsBean;
 
 /**
  * @author 花落孤忆
  * @create 2018-10-26 17:04
- * @description
+ * @description FX新闻系统的新闻处理者, 公共接口定义
  */
 public interface IFXNewsPersistent {
     /**
