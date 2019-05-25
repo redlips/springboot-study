@@ -1,4 +1,4 @@
-package com.redlips.java7.concurrency;
+package com.redlips;
 
 import java.util.concurrent.TimeUnit;
 

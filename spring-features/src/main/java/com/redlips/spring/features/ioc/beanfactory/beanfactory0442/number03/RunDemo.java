@@ -25,7 +25,7 @@ public class RunDemo {
         Map map = new HashMap();
         DatePropertyEditor datePropertyEditor = new DatePropertyEditor();
         datePropertyEditor.setDatePattern("yyyy/MM/dd");
-        map.put(LocalDate.class,  datePropertyEditor);
+        map.put(LocalDate.class, datePropertyEditor);
 
         configurer.setCustomEditors(map);
         configurer.postProcessBeanFactory(beanFactory);

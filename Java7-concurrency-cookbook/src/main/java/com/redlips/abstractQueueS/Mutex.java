@@ -1,4 +1,4 @@
-package com.redlips.java7.concurrency.abstractQueueS;
+package com.redlips.abstractQueueS;
 
 import java.io.Serializable;
 import java.util.concurrent.locks.AbstractQueuedSynchronizer;

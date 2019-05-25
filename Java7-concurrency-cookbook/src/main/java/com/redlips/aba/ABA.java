@@ -1,4 +1,4 @@
-package com.redlips.java7.concurrency.aba;
+package com.redlips.aba;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
