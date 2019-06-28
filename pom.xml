@@ -9,8 +9,8 @@
     <modules>
         <module>springboot-features</module>
         <module>java-features</module>
+        <module>Java7-concurrency-cookbook</module>
         <module>spring-features</module>
-        <module>java-concurrency</module>
         <module>springboot-redis</module>
         <module>data-structure</module>
     </modules>

@@ -1,6 +1,5 @@
 package com.redlips;
 
-import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -29,7 +28,7 @@ public class Test {
 //            Thread.yield();
 //        }
 //        System.out.println(test.inc);
-        int i = test1(17);
+        int i = test1(150);
         System.out.println(i);
         Integer i1 = 1;
         Integer i2 = 1;

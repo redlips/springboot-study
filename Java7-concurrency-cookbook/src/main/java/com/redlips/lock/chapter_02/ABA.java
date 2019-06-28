@@ -1,4 +1,4 @@
-package com.redlips.aba;
+package com.redlips.lock.chapter_02;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -15,25 +15,25 @@ public class ABA {
 
 
     public static void main(String[] args) throws InterruptedException {
-        Thread t1 = new Thread(() -> {
-            atomicInteger.compareAndSet(100, 101);
-            atomicInteger.compareAndSet(101, 100);
-        });
-
-        Thread t2 = new Thread(() -> {
-            try {
-                TimeUnit.SECONDS.sleep(2);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            boolean b = atomicInteger.compareAndSet(100, 101);
-            System.out.println(b);
-        });
-
-        t1.start();
-        t2.start();
-        t1.join();
-        t2.join();
+//        Thread t1 = new Thread(() -> {
+//            atomicInteger.compareAndSet(100, 101);
+//            atomicInteger.compareAndSet(101, 100);
+//        });
+//
+//        Thread t2 = new Thread(() -> {
+//            try {
+//                TimeUnit.SECONDS.sleep(2);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            boolean b = atomicInteger.compareAndSet(100, 101);
+//            System.out.println(b);
+//        });
+//
+//        t1.start();
+//        t2.start();
+//        t1.join();
+//        t2.join();
 
 
         Thread t3 = new Thread(() -> {
