@@ -1,5 +1,8 @@
 package com.redlips.springboot.redis;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.redlips.springboot.redis.pojo.RedisModel;
 import com.redlips.springboot.redis.util.RedisUtil;
 import org.junit.Test;
@@ -9,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -25,22 +29,46 @@ public class ApplicationTests {
     private RedisUtil redisUtil;
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
+    ObjectMapper objectMapper = new ObjectMapper();
     @Test
-    public void test() {
+    public void testString() throws JsonProcessingException {
         List<RedisModel> list = new ArrayList<>();
         RedisModel model = new RedisModel();
         model.setAddress("广州");
         model.setName("qt");
         model.setRedisKey("model");
         model.setTel("2323");
+        model.setMoney(100.213);
         list.add(model);
-        redisUtil.set("model", list);
+//        redisUtil.set("model", objectMapper.writeValueAsString(list));
+
+        String jsonString = (String) redisTemplate.opsForValue().get("model");
+        System.out.println("jsonString = " + jsonString);
+
+        try {
+            List<RedisModel> modelList = objectMapper.readValue(jsonString, new TypeReference<List<RedisModel>>() {
+            });
+
+            System.out.println(modelList);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Test
     public void test2() {
-        List<RedisModel> model = (List<RedisModel>) redisUtil.get("model");
-        System.out.println(model);
+//        List<RedisModel> list = new ArrayList<>();
+//        RedisModel model = new RedisModel();
+//        model.setAddress("广州");
+//        model.setName("qt");
+//        model.setRedisKey("model");
+//        model.setTel("2323");
+//        model.setMoney(100.213);
+//        list.add(model);
+//        redisUtil.set("model", list);
+        List<RedisModel> modelList = (List<RedisModel>) redisUtil.get("model");
+        System.out.println(modelList);
     }
 
     @Test

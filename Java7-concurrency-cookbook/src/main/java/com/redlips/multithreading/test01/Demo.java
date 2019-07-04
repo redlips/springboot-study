@@ -1,4 +1,4 @@
-package com.redlips.test03;
+package com.redlips.multithreading.test01;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

@@ -1,4 +1,4 @@
-package com.redlips.test03;
+package com.redlips.multithreading.test01;
 
 /**
  * @author qiaotong
